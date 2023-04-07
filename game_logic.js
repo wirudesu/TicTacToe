@@ -44,9 +44,25 @@ function boxClicked(e) {
             return
         }
 
+        let tie = true // check if the game is a tie
+        for (let i = 0; i < spaces.length; i++) {
+            if (!spaces[i]) {
+                tie = false
+                break
+            }
+        }
+        if (tie) {
+            playerText.innerHTML = 'The game is a tie!'
+            gameOver = true
+            // Remove event listeners from boxes
+            boxes.forEach(box => box.removeEventListener('click', boxClicked))
+            return
+        }
+
         currentPlayer = currentPlayer == X_TEXT ? O_TEXT : X_TEXT
     }
 }
+
 
 
 const winningCombos = [
@@ -71,6 +87,7 @@ function playerHasWon() {
     return false
 }
 
+
 restartBtn.addEventListener('click', restart)
 
 function restart() {
@@ -90,6 +107,32 @@ function restart() {
         startGame() // re-add event listeners
     }
 }
+
+resetScoreBtn.addEventListener('click',reset)
+
+function reset() {
+    if(gameOver){ // check if the game is over before restarting
+        spaces.fill(null)
+
+        boxes.forEach( box => {
+            box.innerText = ''
+            box.style.backgroundColor=''
+        })
+
+        playerText.innerHTML = 'Tic Tac Toe'
+
+        currentPlayer = X_TEXT
+        player1Score = 0
+        player2Score = 0
+        document.querySelector('.player1Score').textContent = `Player 1: ${player1Score}`
+        document.querySelector('.player2Score').textContent = `Player 2: ${player2Score}`
+
+
+        gameOver = false // reset the game over flag
+        startGame() // re-add event listeners
+    }
+}
+
 
 player1Score = 0
 player2Score = 0
