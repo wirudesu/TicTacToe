@@ -8,15 +8,18 @@ const O_TEXT = "O"
 const X_TEXT = "X"
 let currentPlayer = X_TEXT
 let spaces = Array(9).fill(null)
+let gameOver = false // add a game over flag
 
 const startGame = () => {
-    boxes.forEach(box => box.addEventListener('click', boxClicked))
+    if (!gameOver) { // check if the game is not over
+        boxes.forEach(box => box.addEventListener('click', boxClicked))
+    }
 }
 
 function boxClicked(e) {
     const id = e.target.id
 
-    if(!spaces[id]){
+    if(!spaces[id] && !gameOver){ // check if the game is not over
         spaces[id] = currentPlayer
         e.target.innerText = currentPlayer
 
@@ -36,6 +39,7 @@ function boxClicked(e) {
 
             // Remove event listeners from boxes
             boxes.forEach(box => box.removeEventListener('click', boxClicked))
+            gameOver = true // set the game over flag to true
 
             return
         }
@@ -70,16 +74,21 @@ function playerHasWon() {
 restartBtn.addEventListener('click', restart)
 
 function restart() {
-    spaces.fill(null)
+    if(gameOver){ // check if the game is over before restarting
+        spaces.fill(null)
 
-    boxes.forEach( box => {
-        box.innerText = ''
-        box.style.backgroundColor=''
-    })
+        boxes.forEach( box => {
+            box.innerText = ''
+            box.style.backgroundColor=''
+        })
 
-    playerText.innerHTML = 'Tic Tac Toe'
+        playerText.innerHTML = 'Tic Tac Toe'
 
-    currentPlayer = X_TEXT
+        currentPlayer = X_TEXT
+
+        gameOver = false // reset the game over flag
+        startGame() // re-add event listeners
+    }
 }
 
 player1Score = 0
