@@ -25,12 +25,25 @@ function boxClicked(e) {
             let winning_blocks = playerHasWon()
 
             winning_blocks.map( box => boxes[box].style.backgroundColor=winnerIndicator)
+
+            if (currentPlayer == X_TEXT) {
+                player1Score++
+                document.querySelector('.player1Score').textContent = `Player 1: ${player1Score}`
+            } else {
+                player2Score++
+                document.querySelector('.player2Score').textContent = `Player 2: ${player2Score}`
+            }
+
+            // Remove event listeners from boxes
+            boxes.forEach(box => box.removeEventListener('click', boxClicked))
+
             return
         }
 
         currentPlayer = currentPlayer == X_TEXT ? O_TEXT : X_TEXT
     }
 }
+
 
 const winningCombos = [
     [0,1,2],
@@ -68,5 +81,11 @@ function restart() {
 
     currentPlayer = X_TEXT
 }
+
+player1Score = 0
+player2Score = 0
+document.querySelector('.player1Score').textContent = `Player 1: ${player1Score}`
+document.querySelector('.player2Score').textContent = `Player 2: ${player2Score}`
+
 
 startGame()
