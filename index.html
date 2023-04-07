@@ -13,8 +13,10 @@
 <body>
     <div class="container">
         <h1 id="playerText">Tic Tac Toe</h1>
-        <button id="restartBtn">Restart</button>
-        <button id="resetScoreBtn">Reset Score</button>
+        <div class="button-container">
+            <button id="restartBtn">Restart</button>
+            <button id="resetScoreBtn">Reset Score</button>
+        </div>
 
         <div id="gameboard">
             <div class="box" id="0"></div>
@@ -30,11 +32,43 @@
         
         <div id="scoreboard">
             <h2>Score</h2>
-            <div class="playerScore" id="player1Score">Player 1: 0</div>
-            <div class="playerScore" id="player2Score">Player 2: 0</div>
+            <div class="playerScore player1Score">Player 1: 0</div>
+            <div class="playerScore player2Score">Player 2: 0</div>
         </div>
     </div>
     
     <script src="/game_logic.js"></script>
+
+    <style>
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        #restartBtn {
+            margin-right: 10px;
+        }
+
+        #scoreboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.playerScore {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.player1Score {
+  order: 2;
+}
+
+.player2Score {
+  order: 1;
+}
+    </style>
 </body>
 </html>

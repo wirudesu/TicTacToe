@@ -1,5 +1,6 @@
 let playerText = document.getElementById('playerText')
 let restartBtn = document.getElementById('restartBtn')
+let resetScoreBtn = document.getElementById('resetScoreBtn')
 let boxes = Array.from(document.getElementsByClassName('box'))
 
 let winnerIndicator = getComputedStyle(document.body).getPropertyValue('--winning-blocks')
@@ -9,34 +10,8 @@ const X_TEXT = "X"
 let currentPlayer = X_TEXT
 let spaces = Array(9).fill(null)
 
-let player1Score = 0;
-let player2Score = 0;
-
-function updateScoreBoard() {
-    document.getElementById("player1Score").innerHTML = "Player 1: " + player1Score;
-    document.getElementById("player2Score").innerHTML = "Player 2: " + player2Score;
-}
-
-function checkWin(player) {
-    // check for win condition
-    if (playerHasWon() !== false) {
-        if (player === "player1") {
-            player1Score++;
-        } else {
-            player2Score++;
-        }
-        updateScoreBoard();
-        playerText.innerHTML = `${currentPlayer} has won!`
-        let winning_blocks = playerHasWon()
-        winning_blocks.map( box => boxes[box].style.backgroundColor=winnerIndicator)
-    } else if (spaces.indexOf(null) == -1) {
-        // tie game
-        playerText.innerHTML = `Tie game!`
-    } else {
-        // game in progress
-        currentPlayer = currentPlayer == X_TEXT ? O_TEXT : X_TEXT
-    }
-}
+let xScore = 0
+let oScore = 0
 
 const startGame = () => {
     boxes.forEach(box => box.addEventListener('click', boxClicked))
@@ -45,11 +20,28 @@ const startGame = () => {
 function boxClicked(e) {
     const id = e.target.id
 
-    if(!spaces[id]){
+    if(!spaces[id] && playerHasWon() === false){
         spaces[id] = currentPlayer
         e.target.innerText = currentPlayer
 
-        checkWin(currentPlayer === X_TEXT ? "player1" : "player2")
+        if(playerHasWon() !== false){
+            playerText.innerHTML = `${currentPlayer} has won!`
+            let winning_blocks = playerHasWon()
+
+            winning_blocks.map( box => boxes[box].style.backgroundColor=winnerIndicator)
+
+            if (currentPlayer === X_TEXT) {
+                xScore++
+                document.getElementById('xScore').innerHTML = xScore
+            } else {
+                oScore++
+                document.getElementById('oScore').innerHTML = oScore
+            }
+            
+            return
+        }
+
+        currentPlayer = currentPlayer == X_TEXT ? O_TEXT : X_TEXT
     }
 }
 
@@ -76,7 +68,7 @@ function playerHasWon() {
 }
 
 restartBtn.addEventListener('click', restart)
-restartBtn.addEventListener('click', resetScoreBoard);
+resetScoreBtn.addEventListener('click', resetScore)
 
 function restart() {
     spaces.fill(null)
@@ -88,16 +80,23 @@ function restart() {
 
     playerText.innerHTML = 'Tic Tac Toe'
 
-    currentPlayer = X_TEXT
-    player1Score = 0;
-    player2Score = 0;
+    currentPlayer = X_TEXT    
+    xScore = 0;
+    oScore = 0;
     updateScoreBoard();
 }
 
-function resetScoreBoard() {
-    player1Score = 0;
-    player2Score = 0;
-    updateScoreBoard();
+function resetScore() {
+    xScore = 0
+    oScore = 0
+
+    document.getElementById('xScore').innerHTML = xScore
+    document.getElementById('oScore').innerHTML = oScore
+}
+
+function updateScoreBoard() {
+    document.getElementById('xScore').innerHTML = xScore
+    document.getElementById('oScore').innerHTML = oScore
 }
 
 startGame()
