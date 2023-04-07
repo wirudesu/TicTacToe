@@ -9,6 +9,35 @@ const X_TEXT = "X"
 let currentPlayer = X_TEXT
 let spaces = Array(9).fill(null)
 
+let player1Score = 0;
+let player2Score = 0;
+
+function updateScoreBoard() {
+    document.getElementById("player1Score").innerHTML = "Player 1: " + player1Score;
+    document.getElementById("player2Score").innerHTML = "Player 2: " + player2Score;
+}
+
+function checkWin(player) {
+    // check for win condition
+    if (playerHasWon() !== false) {
+        if (player === "player1") {
+            player1Score++;
+        } else {
+            player2Score++;
+        }
+        updateScoreBoard();
+        playerText.innerHTML = `${currentPlayer} has won!`
+        let winning_blocks = playerHasWon()
+        winning_blocks.map( box => boxes[box].style.backgroundColor=winnerIndicator)
+    } else if (spaces.indexOf(null) == -1) {
+        // tie game
+        playerText.innerHTML = `Tie game!`
+    } else {
+        // game in progress
+        currentPlayer = currentPlayer == X_TEXT ? O_TEXT : X_TEXT
+    }
+}
+
 const startGame = () => {
     boxes.forEach(box => box.addEventListener('click', boxClicked))
 }
@@ -20,15 +49,7 @@ function boxClicked(e) {
         spaces[id] = currentPlayer
         e.target.innerText = currentPlayer
 
-        if(playerHasWon() !==false){
-            playerText.innerHTML = `${currentPlayer} has won!`
-            let winning_blocks = playerHasWon()
-
-            winning_blocks.map( box => boxes[box].style.backgroundColor=winnerIndicator)
-            return
-        }
-
-        currentPlayer = currentPlayer == X_TEXT ? O_TEXT : X_TEXT
+        checkWin(currentPlayer === X_TEXT ? "player1" : "player2")
     }
 }
 
@@ -55,6 +76,7 @@ function playerHasWon() {
 }
 
 restartBtn.addEventListener('click', restart)
+restartBtn.addEventListener('click', resetScoreBoard);
 
 function restart() {
     spaces.fill(null)
@@ -67,6 +89,16 @@ function restart() {
     playerText.innerHTML = 'Tic Tac Toe'
 
     currentPlayer = X_TEXT
+    player1Score = 0;
+    player2Score = 0;
+    updateScoreBoard();
 }
 
+function resetScoreBoard() {
+    player1Score = 0;
+    player2Score = 0;
+    updateScoreBoard();
+}
+
+updateScoreBoard()
 startGame()
