@@ -20,11 +20,11 @@ const startGame = () => {
 function boxClicked(e) {
     const id = e.target.id
 
-    if(!spaces[id] && playerHasWon() === false){
+    if(!spaces[id] && !playerHasWon()){
         spaces[id] = currentPlayer
         e.target.innerText = currentPlayer
 
-        if(playerHasWon() !== false){
+        if(playerHasWon()){
             playerText.innerHTML = `${currentPlayer} has won!`
             let winning_blocks = playerHasWon()
 
