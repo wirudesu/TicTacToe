@@ -100,5 +100,4 @@ function resetScoreBoard() {
     updateScoreBoard();
 }
 
-updateScoreBoard()
 startGame()
