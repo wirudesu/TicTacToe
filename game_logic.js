@@ -88,18 +88,5 @@ document.querySelector('.player1Score').textContent = `Player 1: ${player1Score}
 document.querySelector('.player2Score').textContent = `Player 2: ${player2Score}`
 
 
-function restart() {
-    spaces.fill(null)
 
-    boxes.forEach( box => {
-        box.innerText = ''
-        box.style.backgroundColor=''
-    })
-
-    playerText.innerHTML = 'Tic Tac Toe'
-
-    currentPlayer = X_TEXT
-
-    // Add event listeners back to boxes
-    startGame()
-}
+startGame()
