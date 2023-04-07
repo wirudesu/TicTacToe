@@ -1,6 +1,5 @@
 let playerText = document.getElementById('playerText')
 let restartBtn = document.getElementById('restartBtn')
-let resetScoreBtn = document.getElementById('resetScoreBtn')
 let boxes = Array.from(document.getElementsByClassName('box'))
 
 let winnerIndicator = getComputedStyle(document.body).getPropertyValue('--winning-blocks')
@@ -10,9 +9,6 @@ const X_TEXT = "X"
 let currentPlayer = X_TEXT
 let spaces = Array(9).fill(null)
 
-let xScore = 0
-let oScore = 0
-
 const startGame = () => {
     boxes.forEach(box => box.addEventListener('click', boxClicked))
 }
@@ -20,24 +16,15 @@ const startGame = () => {
 function boxClicked(e) {
     const id = e.target.id
 
-    if(!spaces[id] && !playerHasWon()){
+    if(!spaces[id]){
         spaces[id] = currentPlayer
         e.target.innerText = currentPlayer
 
-        if(playerHasWon()){
+        if(playerHasWon() !==false){
             playerText.innerHTML = `${currentPlayer} has won!`
             let winning_blocks = playerHasWon()
 
             winning_blocks.map( box => boxes[box].style.backgroundColor=winnerIndicator)
-
-            if (currentPlayer === X_TEXT) {
-                xScore++
-                document.getElementById('xScore').innerHTML = xScore
-            } else {
-                oScore++
-                document.getElementById('oScore').innerHTML = oScore
-            }
-            
             return
         }
 
@@ -68,7 +55,6 @@ function playerHasWon() {
 }
 
 restartBtn.addEventListener('click', restart)
-resetScoreBtn.addEventListener('click', resetScore)
 
 function restart() {
     spaces.fill(null)
@@ -80,23 +66,7 @@ function restart() {
 
     playerText.innerHTML = 'Tic Tac Toe'
 
-    currentPlayer = X_TEXT    
-    xScore = 0;
-    oScore = 0;
-    updateScoreBoard();
-}
-
-function resetScore() {
-    xScore = 0
-    oScore = 0
-
-    document.getElementById('xScore').innerHTML = xScore
-    document.getElementById('oScore').innerHTML = oScore
-}
-
-function updateScoreBoard() {
-    document.getElementById('xScore').innerHTML = xScore
-    document.getElementById('oScore').innerHTML = oScore
+    currentPlayer = X_TEXT
 }
 
 startGame()
