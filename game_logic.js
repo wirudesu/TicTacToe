@@ -3,6 +3,8 @@ let restartBtn = document.getElementById('restartBtn')
 let resetScoreBtn = document.getElementById('resetScoreBtn')
 let boxes = Array.from(document.getElementsByClassName('box'))
 
+let highestScoreText = document.getElementById('highestScore')
+
 let winnerIndicator = getComputedStyle(document.body).getPropertyValue('--winning-blocks')
 
 const O_TEXT = "O"
@@ -11,43 +13,58 @@ let currentPlayer = X_TEXT
 let spaces = Array(9).fill(null)
 let gameOver = false // add a game over flag
 
+let highestScore = 0 // add a variable to store the highest score
+
 const startGame = () => {
     if (!gameOver) { // check if the game is not over
         boxes.forEach(box => box.addEventListener('click', boxClicked))
     }
 }
 
-function boxClicked(e) {
-    const id = e.target.id
-
-    if(!spaces[id] && !gameOver){ // check if the game is not over
-        spaces[id] = currentPlayer
-        e.target.innerText = currentPlayer
-
-        if(playerHasWon() !==false){
-            playerText.innerHTML = `${currentPlayer} has won!`
-            let winning_blocks = playerHasWon()
-
-            winning_blocks.map( box => boxes[box].style.backgroundColor=winnerIndicator)
-
-            if (currentPlayer == X_TEXT) {
-                player1Score++
-                document.querySelector('.player1Score').textContent = `Player 1: ${player1Score}`
-            } else {
-                player2Score++
-                document.querySelector('.player2Score').textContent = `Player 2: ${player2Score}`
-            }
-
-            // Remove event listeners from boxes
-            boxes.forEach(box => box.removeEventListener('click', boxClicked))
-            gameOver = true // set the game over flag to true
-
-            return
-        }
-
-        currentPlayer = currentPlayer == X_TEXT ? O_TEXT : X_TEXT
+function displayHighestScore() {
+    let currentScore = currentPlayer == X_TEXT ? player1Score : player2Score
+    let playerName = currentPlayer == X_TEXT ? 'Player 1' : 'Player 2'
+    if (currentScore > highestScore) {
+      highestScore = currentScore
+      highestScoreText.textContent = `Highest Score: ${highestScore} (${playerName})`
     }
-}
+  }
+  
+  
+
+function boxClicked(e) {
+    const id = e.target.id;
+  
+    if (!spaces[id] && !gameOver) { // check if the game is not over
+      spaces[id] = currentPlayer;
+      e.target.innerText = currentPlayer;
+  
+      if (playerHasWon() !== false) {
+        playerText.innerHTML = `${currentPlayer} has won!`;
+        let winning_blocks = playerHasWon();
+  
+        winning_blocks.map(box => (boxes[box].style.backgroundColor = winnerIndicator));
+  
+        if (currentPlayer == X_TEXT) {
+          player1Score++;
+          document.querySelector('.player1Score').textContent = `Player 1: ${player1Score}`;
+        } else {
+          player2Score++;
+          document.querySelector('.player2Score').textContent = `Player 2: ${player2Score}`;
+        }
+  
+        displayHighestScore(); // call the function to update the highest score
+        // Remove event listeners from boxes
+        boxes.forEach(box => box.removeEventListener('click', boxClicked));
+        gameOver = true; // set the game over flag to true
+  
+        return;
+      }
+  
+      currentPlayer = currentPlayer == X_TEXT ? O_TEXT : X_TEXT;
+    }
+  }
+  
 
 
 const winningCombos = [
