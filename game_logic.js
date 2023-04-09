@@ -1,5 +1,6 @@
 let playerText = document.getElementById('playerText')
 let restartBtn = document.getElementById('restartBtn')
+let resetScoreBtn = document.getElementById('resetScoreBtn')
 let boxes = Array.from(document.getElementsByClassName('box'))
 
 let winnerIndicator = getComputedStyle(document.body).getPropertyValue('--winning-blocks')
@@ -72,6 +73,7 @@ function playerHasWon() {
 }
 
 restartBtn.addEventListener('click', restart)
+resetScoreBtn.addEventListener('click', resetScore)
 
 function restart() {
     if(gameOver){ // check if the game is over before restarting
@@ -91,11 +93,16 @@ function restart() {
     }
 }
 
-player1Score = 0
-player2Score = 0
+function resetScore() {
+    player1Score = 0
+    player2Score = 0
+    document.querySelector('.player1Score').textContent = `Player 1: ${player1Score}`
+    document.querySelector('.player2Score').textContent = `Player 2: ${player2Score}`
+}
+
+let player1Score = 0
+let player2Score = 0
 document.querySelector('.player1Score').textContent = `Player 1: ${player1Score}`
 document.querySelector('.player2Score').textContent = `Player 2: ${player2Score}`
-
-
 
 startGame()
