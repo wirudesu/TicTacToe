@@ -1,0 +1,31 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #9ec3ef;
+    color: #ffffff;
+    font-family: 'Finger Paint', cursive;
+}
+
+h1 {
+    font-size: 3rem;
+    margin-bottom: 2rem;
+}
+
+button {
+    padding: 1rem 2rem;
+    background-color: #f893b5;
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 3px;
+    font-size: 1.2rem;
+    display: block;
+    margin: 0 auto;
+}
+
+button:hover {
+    background-color: #e48082;
+}
